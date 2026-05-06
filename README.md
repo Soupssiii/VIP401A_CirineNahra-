@@ -1,384 +1,263 @@
-\# VIP401A – MS Lesion Segmentation Pipeline
+# VIP401A - MS Lesion Segmentation Pipeline
 
+Deep learning pipeline for **3D MRI Multiple Sclerosis (MS) lesion segmentation**, including preprocessing, model training, residual architecture improvements, sliding-window inference, and postprocessing-based visualization.
 
+---
 
-\## Author
+## Author
 
-\*\*Cirine Nahra\*\*  
-
+**Cirine Nahra**  
 American University of Beirut (AUB)  
+VIP 401A - Final Submission
 
-VIP 401A – Final Submission
+---
 
+## Project Overview
 
+This repository contains the complete development workflow of an MS lesion segmentation project:
 
-\---
+- MRI preprocessing and data preparation
+- Baseline 3D U-Net experimentation
+- Residual 3D U-Net architecture refinement
+- Patch-based training strategy
+- Sliding-window inference on 3D volumes
+- Dice-based quantitative evaluation
+- Postprocessing and slice-level qualitative analysis
+- Hyperparameter grid-search experimentation
 
+---
 
+## Recommended Notebook
 
-\# Project Overview
+> **Primary notebook to read and run:**  
+> `CCN04_MS_Lesion_Segmentation_FullPipeline.ipynb`
 
+This is the **FINAL and MOST ORGANIZED** notebook in the repository and the one recommended for reviewers, instructors, and reproducibility.
 
+It includes:
 
-This repository contains the full implementation, experiments, and postprocessing pipelines for a 3D MRI Multiple Sclerosis (MS) lesion segmentation project using deep learning.
+- Cleaned and structured code
+- Clear comments and section titles
+- Architecture explanations
+- Full training workflow
+- Checkpoint loading and resume workflow
+- Residual architecture implementation
+- Inference pipeline
+- Evaluation metrics
+- Postprocessing
+- Visualization pipeline
 
+---
 
+## Notebook Guide
 
-The project focuses on:
+### 1) `CCN04_MS_Lesion_Segmentation_FullPipeline.ipynb` (Final Polished Version)
 
-\- MRI preprocessing
+**Role:** Final production-quality notebook for the project.
 
-\- 3D U-Net segmentation
+**What it contains:**
 
-\- Residual 3D U-Net improvements
+- End-to-end pipeline from loading to evaluation
+- Original modified 3D U-Net and residual 3D U-Net
+- Training and resume training utilities
+- Sliding-window inference and patient-level analysis
+- Postprocessing and visualization exports
 
-\- Sliding-window inference
+**Use this notebook when:**
 
-\- Dice-based evaluation
+- You want the complete and most reliable workflow
+- You want to reproduce final results
+- You are reviewing the final submission structure
 
-\- Postprocessing and slice-level visualization
+---
 
-\- Architecture comparison experiments
+### 2) `VIP401A_ccn.ipynb` (Baseline / Early Version)
 
-\- Grid search optimization
+**Role:** Original baseline notebook from early project stages.
 
+**What it represents:**
 
+- Initial architecture implementation
+- Early experimental iterations
+- Smaller-scale setup for initial validation
 
-\---
+**Use this notebook when:**
 
+- You want to understand the project starting point
+- You want to compare baseline setup versus final improvements
 
+---
 
-\# Repository Structure
+### 3) `VIP401A_ccn_gridsearch_500epochs.ipynb` (Grid Search + Long Training)
 
+**Role:** Hyperparameter experimentation notebook.
 
+**What it contains:**
 
-\## 1. Collab Notebooks
+- Learning-rate and weight-decay testing
+- Long training experiments (including 500-epoch runs)
+- Checkpoint-based evaluation during hyperparameter tuning
 
+**Use this notebook when:**
 
+- You want to inspect optimization strategy
+- You want to trace how final training parameters were selected
 
-\### `CCN04\_MS\_Lesion\_Segmentation\_FullPipeline.ipynb`
+**Best configuration identified:**
 
-Main and final segmentation pipeline.
+- Learning Rate: `3e-4`
+- Weight Decay: `1e-6`
 
+---
 
+### 4) `Full_Pipeline_Before_Comments_and_Edits.ipynb` (Pre-Cleanup Version)
 
-\### Contents
+**Role:** Earlier full-pipeline version before documentation cleanup.
 
-\- MRI loading
+**What it represents:**
 
-\- Preprocessing
+- Pre-polish structure and code layout
+- Historical snapshot before comments/organizational improvements
 
-\- Original Modified 3D U-Net
+**Use this notebook when:**
 
-\- Residual 3D U-Net
+- You want historical comparison with the final polished notebook
+- You need reference to earlier formatting/state of the full pipeline
 
-\- Patch dataset generation
+---
 
-\- Training pipeline
+## Version Summary Table
 
-\- Resume training
+| Notebook | Version Type | Main Purpose | Status |
+|---|---|---|---|
+| `CCN04_MS_Lesion_Segmentation_FullPipeline.ipynb` | Final organized version | End-to-end final pipeline, training, inference, evaluation, postprocessing | **Recommended** |
+| `VIP401A_ccn.ipynb` | Baseline version | Early architecture and initial experiments | Legacy / baseline |
+| `VIP401A_ccn_gridsearch_500epochs.ipynb` | Experimental tuning version | Hyperparameter search and long-training studies | Experimental |
+| `Full_Pipeline_Before_Comments_and_Edits.ipynb` | Pre-cleanup full pipeline | Historical reference before documentation improvements | Archived reference |
 
-\- Sliding-window inference
+---
 
-\- Dice evaluation
+## PDF Versions
 
-\- Slice-level postprocessing
+The `PDFS` folder contains exported static versions of the notebooks.
 
-\- Visualization export
+**Purpose of the PDF files:**
 
-\- Patient-level analysis
+- Easier reading without opening notebook environments
+- Submission and review convenience
+- Static documentation for archival/reference
+- Direct content mirror of corresponding notebooks
 
+---
 
+## Dataset Inputs
 
-\### Purpose
+Each patient sample includes:
 
-This is the primary notebook used for the final architecture experiments and qualitative evaluation.
+- Baseline MRI volume
+- Follow-up MRI volume
+- Ground-truth lesion mask
 
+Expected naming convention:
 
+- `baseline_0p5_norm_padded.nii.gz`
+- `followup_registered_0p5_norm_padded.nii.gz`
+- `label_0p5_padded.nii.gz`
 
-\---
+---
 
+## Model and Training Snapshot
 
+### Architecture Progression
 
-\### `VIP401A\_ccn\_gridsearch\_500epochs.ipynb`
+- **Baseline:** Modified 3D U-Net
+  - Encoder-decoder structure
+  - Instance normalization
+  - LeakyReLU activations
+  - Skip connections
+- **Improved:** Residual 3D U-Net
+  - Residual blocks
+  - Dropout in deeper levels
+  - Improved gradient flow and stability
 
-Grid search and long-training experiment notebook.
-
-
-
-\### Contents
-
-\- Hyperparameter search
-
-\- Learning-rate experiments
-
-\- Weight decay experiments
-
-\- 500-epoch training analysis
-
-\- Checkpoint evaluation
-
-
-
-\### Purpose
-
-Used to identify the best training configuration.
-
-
-
-Best configuration found:
-
-\- Learning Rate = `3e-4`
-
-\- Weight Decay = `1e-6`
-
-
-
-\---
-
-
-
-\### `VIP401A\_ccn.ipynb`
-
-Original baseline notebook.
-
-
-
-\### Contents
-
-\- Initial segmentation implementation
-
-\- Early experiments
-
-\- Small-scale training/testing setup
-
-
-
-\### Purpose
-
-Represents the earlier baseline version before architecture improvements.
-
-
-
-\---
-
-
-
-\### `Full\_Pipeline\_Before\_Comments\_and\_Edits.ipynb`
-
-Original notebook before cleanup and documentation edits.
-
-
-
-\### Purpose
-
-Preserved for reference and comparison purposes.
-
-
-
-\---
-
-
-
-\# 2. PDF Versions
-
-
-
-Each notebook is also provided as a PDF version for:
-
-\- Easier reading
-
-\- Documentation
-
-\- Submission review
-
-\- Static reference
-
-
-
-\---
-
-
-
-\# Architecture Summary
-
-
-
-\## Original Architecture
-
-Modified 3D U-Net using:
-
-\- Encoder-decoder structure
-
-\- Instance normalization
-
-\- LeakyReLU activations
-
-\- Skip connections
-
-
-
-\---
-
-
-
-\## Improved Architecture
-
-Residual 3D U-Net using:
-
-\- Residual blocks
-
-\- Dropout in deeper layers
-
-\- Improved gradient flow
-
-\- Better training stability
-
-\- Same 2-channel MRI input
-
-\- Same 1-channel segmentation output
-
-
-
-\---
-
-
-
-\# Dataset Information
-
-
-
-\## MRI Inputs
-
-Each patient contains:
-
-\- Baseline MRI volume
-
-\- Follow-up MRI volume
-
-\- Ground-truth lesion mask
-
-
-
-\### File Naming
-
-\- `baseline\_0p5\_norm\_padded.nii.gz`
-
-\- `followup\_registered\_0p5\_norm\_padded.nii.gz`
-
-\- `label\_0p5\_padded.nii.gz`
-
-
-
-\---
-
-
-
-\# Training Details
-
-
-
-\## Training Strategy
-
-\- Patch-based training
-
-\- Balanced lesion sampling
-
-\- Sliding-window inference
-
-\- Dice + BCE loss
-
-
-
-\## Main Hyperparameters
+### Core Training Setup
 
 | Parameter | Value |
-
 |---|---|
+| Patch Size | `64 x 64 x 64` |
+| Stride | `32 x 32 x 32` |
+| Learning Rate | `3e-4` |
+| Weight Decay | `1e-6` |
+| Threshold | `0.5` |
+| Loss | Dice + BCE |
 
-| Patch Size | 64×64×64 |
+---
 
-| Stride | 32×32×32 |
+## Postprocessing and Visualization
 
-| Learning Rate | 3e-4 |
+Postprocessing pipeline supports:
 
-| Weight Decay | 1e-6 |
+- Slice-level lesion inspection
+- Ground-truth vs prediction comparison
+- Overlay visualization
+- Patient-level Dice summaries
 
-| Threshold | 0.5 |
+Overlay color convention:
 
+- Green -> Ground Truth
+- Red -> Prediction
+- Yellow -> Overlap
 
+---
 
-\---
+## Saved Outputs
 
+Generated artifacts typically include:
 
+- Prediction masks
+- Training checkpoints
+- Training history curves/logs
+- Patient-level Dice summaries
+- Slice-level PNG visualizations
 
-\# Postprocessing and Visualization
+---
 
+## How to Run
 
+Use the workflow below (recommended with the final notebook):
 
-The pipeline includes:
+1. **Open in Google Colab**  
+   Upload or open `CCN04_MS_Lesion_Segmentation_FullPipeline.ipynb`.
 
-\- Slice-level lesion analysis
+2. **Mount Google Drive**  
+   Mount Drive to access datasets, checkpoints, and output directories.
 
-\- Ground-truth vs prediction comparison
+3. **Install dependencies**  
+   Run the package installation cell (or execute):
 
-\- Overlay visualization
+   ```bash
+   pip install torch torchvision nibabel numpy pandas matplotlib
+   ```
 
-\- Dice score summaries
+4. **Run setup cells**  
+   Execute environment/configuration cells and path setup sections.
 
-\- Patient-level evaluation
+5. **Load data**  
+   Confirm patient folder structure and input file naming are correct.
 
+6. **Load checkpoints**  
+   Restore pre-trained model checkpoints when available (or train from scratch if needed).
 
+7. **Run inference**  
+   Execute sliding-window inference to generate prediction masks.
 
-\### Overlay Colors
+8. **Run postprocessing and visualization**  
+   Generate overlays, slice-level analyses, and patient-level performance summaries.
 
-\- Green → Ground Truth
+---
 
-\- Red → Prediction
+## Repository Usage Notes
 
-\- Yellow → Overlap
-
-
-
-\---
-
-
-
-\# Saved Outputs
-
-
-
-Generated outputs include:
-
-\- Patient-level Dice summaries
-
-\- Slice-level PNG visualizations
-
-\- Prediction masks
-
-\- Checkpoints
-
-\- Training history
-
-
-
-\---
-
-
-
-\# Running the Notebooks
-
-
-
-\## Requirements
-
-
-
-\### Python Libraries
-
-Install the following:
-
-```bash
-
-pip install torch torchvision nibabel numpy pandas matplotlib
-
+- For most users, start directly with `CCN04_MS_Lesion_Segmentation_FullPipeline.ipynb`.
+- Use the other notebooks to understand project evolution, baselines, and tuning experiments.
+- Use PDFs for quick reading/review when interactive execution is not required.
